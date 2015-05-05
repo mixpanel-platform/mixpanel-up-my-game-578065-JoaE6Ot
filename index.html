@@ -55,7 +55,7 @@
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
-        var vidWatch = promiseArray[0];
+        var vidWatch = promiseArray[0].values();
         var revWatch = promiseArray[1];
         var reviewed = promiseArray[2];
         var paid = promiseArray[3];
