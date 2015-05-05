@@ -49,7 +49,7 @@
       promiselist.push(MP.api.segment("Review", "Role", params));
       promiselist.push(MP.api.segment("Review", "Type", params));
       
-      Promise.all(promiselist).then(function(promiseArray){
+      Promise.all(promiselist).done(function(promiseArray){
         calculateResults(promiseArray);
       });
     }
@@ -62,7 +62,7 @@
       console.log(vidWatch);
       promiselist.push(processResults(vidWatch));
       
-      Promise.all(promiselist).then(function(promiseArray){
+      Promise.all(promiselist).done(function(promiseArray){
         console.log(promiseArray);
         $('table#resultsTable').append(
             '<tr>' +
