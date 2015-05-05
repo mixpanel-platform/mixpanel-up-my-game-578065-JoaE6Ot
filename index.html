@@ -56,12 +56,10 @@
     
     var calculateResults = function(data) {
       promiselist = [];
+      console.log(data);
       var videos = data[0].values();
-      console.log(videos);
       var vidWatch = videos['false'];
-      console.log(vidWatch);
-      var vidTotal = processResults(vidWatch)
-      promiselist.push(vidTotal);
+      promiselist.push(processResults(vidWatch));
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
