@@ -49,12 +49,14 @@
       var reviewed = runQuery("Review", '(string(properties["Role"]) == "Reviewer"))');
       var paid = runQuery("Review", '(string(properties["Type"]) == "Paid"))');
       console.log(vidWatch);
+      setTimeout(function(){
       $('table#resultsTable').append(
             '<tr>' +
             '<td>' + "Video Watch" + '</td>' +
             '<td>' + vidWatch + '</td>' +
             '</tr>'
           );
+      }, 5000);
     };
     
     queryNav();
