@@ -46,19 +46,15 @@
       //promiselist.push(runQuery("Video Open", '(string(properties["Video Owner"]) == "false"))'));
       //params['where'] = '(string(properties["Video Owner"]) == "false"))';
       promiselist.push(MP.api.segment("Video Open", "Video Owner", params));
-      promiselist.push(runQuery("Review", '(string(properties["Role"]) == "Reviewee"))'));
-      var recVideo = 1;
-      var vidShare = 1;
-      var comments = 1;
-      promiselist.push(runQuery("Review", '(string(properties["Role"]) == "Reviewer"))'));
-      promiselist.push(runQuery("Review", '(string(properties["Type"]) == "Paid"))'));
+      promiselist.push(MP.api.segment("Review", "Role", params));
+      promiselist.push(MP.api.segment("Review", "Type", params));
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
         var vidWatch = promiseArray[0].values();
-        var revWatch = promiseArray[1];
-        var reviewed = promiseArray[2];
-        var paid = promiseArray[3];
+        //var revWatch = promiseArray[1];
+        //var reviewed = promiseArray[2];
+        //var paid = promiseArray[3];
         $('table#resultsTable').append(
             '<tr>' +
             '<td>' + "Video Watch" + '</td>' +
