@@ -5,46 +5,70 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <style>
+      table#resultsTable {
+        width: 100%; 
+        background-color: #f1f1c1;
+        border: 1;
+        align: center;
+      }
+    </style>
   </head>
   <body class="mixpanel-platform-body">
-    <div class="mixpanel-platform-section">
-      <div id="eventSelect" style="float: left;"></div>
-      <div id="by" class="mixpanel-platform-label" style="margin-left: 10px; display: none;">by</div>
-      <div id="propSelect" style="float: left;"></div>
-      <div id="dateSelect" style="float: right;"></div>
-      <div style="clear: both;"></div>
-      <div id="graph"></div>
-    </div>
-    <div id="table"></div>
+    <table id="resultsTable">
+      <tr>
+        <td>Service Name</td>
+        <td>Service Sequence</td>
+        <td>Total Events In</td>
+        <td>Total Events Out</td>
+      </tr>
+    </table>
+    
     <script>
-      var eventSelect = $('#eventSelect').MPEventSelect();
-      var propSelect  = $('#propSelect').MPPropertySelect();
-      var dateSelect  = $('#dateSelect').MPDatepicker();
-      var eventGraph  = $('#graph').MPChart({chartType: 'line'});
-      var eventTable  = $('#table').MPTable({
-        showPercentages: true,
-        firstColHeader: 'Event'
+    
+    var params = {
+          from: '2015-01-01',
+          to: '2015-04-30',
+          type: 'general',
+          unit: 'month'
+        };
+        
+    var serviceNameID = serviceName.split(' ').join('_').replace(/["'()]/g,"");
+          $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + serviceName + '</td>' +
+            '<td id="' + serviceNameID + '_Seq"></td>' +
+            '<td id="' + serviceNameID + '_In"></td>' +
+            '<td id="' + serviceNameID + '_Out"></td>' +
+            '</tr>'
+          );
+    
+    var runQuery = function(event, where) {
+      params['where'] = where;
+      MP.api.segment(event, "", where).done(function(results) {
+        params['where'].delete;
+        console.log(results.values());
+        return results.values();
       });
-
-      var runQuery = function() {
-        var eventName = eventSelect.MPEventSelect('value'),
-            propName  = propSelect.MPPropertySelect('value'),
-            dateRange = dateSelect.MPDatepicker('value');
-
-        if (eventName) {
-          MP.api.segment(eventName, propName, dateRange).done(function(results) {
-            eventGraph.MPChart('setData', results);
-            eventTable.MPTable('setData', results);
-          });
-        }
-      };
-      eventSelect.on('change', function(e, eventName) {
-        propSelect.MPPropertySelect('setEvent', eventName);
-        $("#by").show();
-        runQuery();
-      });
-      propSelect.on('change', runQuery);
-      dateSelect.on('change', runQuery);
+    };
+    
+    var queryNav = function() {
+      var vidWatch = runQuery("Video Open", '(string(properties["Video Owner"]) == "false"))');
+      var revWatch = runQuery("Review", '(string(properties["Role"]) == "Reviewee"))');
+      var recVideo = 1;
+      var vidShare = 1;
+      var comments = 1;
+      var reviewed = runQuery("Review", '(string(properties["Role"]) == "Reviewer"))');
+      var paid = runQuery("Review", '(string(properties["Type"]) == "Paid"))');
+      console.log(vidWatch);
+      $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + "Video Watch" + '</td>' +
+            '<td>' + vidWatch + '</td>' +
+            '</tr>'
+          );
+    };
+     
     </script>
   </body>
 </html>
