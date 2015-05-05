@@ -76,10 +76,11 @@
     
     var processResults = function(input) {
       var total = 0;
+      console.log(total);
       var keys = Object.keys(input);
       for(i=0; i<keys.length; i++) {
         console.log(input[keys[i]]);
-        total += input[keys];
+        total += parseInt(input[keys]);
         console.log(total);
       }
       console.log(total);
