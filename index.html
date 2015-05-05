@@ -60,16 +60,8 @@
       console.log(videos);
       var vidWatch = videos['false'];
       console.log(vidWatch);
-      promiselist.push(function(){
-        var total = 0;
-        var keys = Object.keys(vidWatch);
-          for(i=0; i<keys.length; i++) {
-            console.log(input[keys[i]]);
-            total += input[keys];
-          }
-          return total;
-        }.values();
-      );
+      var vidTotal = processResults(vidWatch)
+      promiselist.push(vidTotal);
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
