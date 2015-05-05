@@ -30,16 +30,6 @@
           type: 'general',
           unit: 'month'
         };
-        
-    var serviceNameID = serviceName.split(' ').join('_').replace(/["'()]/g,"");
-          $('table#resultsTable').append(
-            '<tr>' +
-            '<td>' + serviceName + '</td>' +
-            '<td id="' + serviceNameID + '_Seq"></td>' +
-            '<td id="' + serviceNameID + '_In"></td>' +
-            '<td id="' + serviceNameID + '_Out"></td>' +
-            '</tr>'
-          );
     
     var runQuery = function(event, where) {
       params['where'] = where;
@@ -66,6 +56,8 @@
             '</tr>'
           );
     };
+    
+    queryNav();
      
     </script>
   </body>
