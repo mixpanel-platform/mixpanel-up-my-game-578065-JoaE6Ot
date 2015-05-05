@@ -45,7 +45,7 @@
       
       //promiselist.push(runQuery("Video Open", '(string(properties["Video Owner"]) == "false"))'));
       //params['where'] = '(string(properties["Video Owner"]) == "false"))';
-      promiselist.push(MP.api.segment("Video Open", "Video Owner", params));
+      promiselist.push(MP.api.segment("Video Open", "Video Owner", params).done(function(results){ return results.values(); }));
       promiselist.push(MP.api.segment("Review", "Role", params));
       promiselist.push(MP.api.segment("Review", "Type", params));
       
