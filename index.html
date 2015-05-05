@@ -33,7 +33,7 @@
     
     var runQuery = function(event, where) {
       params['where'] = where;
-      MP.api.segment(event, "", where).done(function(results) {
+      MP.api.segment(event, {}, where).done(function(results) {
         params['where'].delete;
         console.log(results.values());
         return results.values();
