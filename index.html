@@ -58,7 +58,7 @@
       promiselist.push(processResults(videos['true']));
       promiselist.push(processResults(reviews['Reviewee']));
       promiselist.push(processResults(reviews['Reviewer']));
-      promiselist.push(processResults(paidRev['paid']));
+      promiselist.push(processResults(paidRev['Paid']));
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
