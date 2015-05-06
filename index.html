@@ -51,6 +51,9 @@
       var videos = data[0].values();
       var reviews = data[1].values();
       var paidRev = data[2].values();
+      console.log(videos);
+      console.log(reviews);
+      console.log(paidRev);
       promiselist.push(processResults(videos['false']));
       promiselist.push(processResults(videos['true']));
       promiselist.push(processResults(reviews['Reviewee']));
