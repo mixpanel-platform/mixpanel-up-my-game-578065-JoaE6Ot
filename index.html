@@ -31,23 +31,14 @@
           unit: 'month'
         };
     
-    var runQuery = function(event, where) {
-      params['where'] = where;
-      MP.api.segment(event, {}, where).done(function(results) {
-        params['where'].delete;
-        console.log(results.values());
-        return results.values();
-      });
-    };
-    
     var queryNav = function() {
       promiselist = [];
       
       //promiselist.push(runQuery("Video Open", '(string(properties["Video Owner"]) == "false"))'));
       //params['where'] = '(string(properties["Video Owner"]) == "false"))';
       promiselist.push(MP.api.segment("Video Open", "Video Owner", params).done(function(results){ return results.values(); }));
-      promiselist.push(MP.api.segment("Review", "Role", params));
-      promiselist.push(MP.api.segment("Review", "Type", params));
+      promiselist.push(MP.api.segment("Review", "Role", params).done(function(results){ return results.values(); }));
+      promiselist.push(MP.api.segment("Review", "Type", params).done(function(results){ return results.values(); }));
       
       Promise.all(promiselist).then(function(promiseArray){
         calculateResults(promiseArray);
@@ -58,8 +49,13 @@
       promiselist = [];
       console.log(data);
       var videos = data[0].values();
-      var vidWatch = videos['false'];
-      promiselist.push(processResults(vidWatch));
+      var reviews = data[1].values();
+      var paidRev = data[2].values();
+      promiselist.push(processResults(videos['false']));
+      promiselist.push(processResults(videos['true']));
+      promiselist.push(processResults(reviews['Reviewee']));
+      promiselist.push(processResults(reviews['Reviewer']));
+      promiselist.push(processResults(paidRev['paid']));
       
       Promise.all(promiselist).then(function(promiseArray){
         console.log(promiseArray);
@@ -67,6 +63,30 @@
             '<tr>' +
             '<td>' + "Video Watch" + '</td>' +
             '<td>' + promiseArray[0] + '</td>' +
+            '</tr>'
+          );
+        $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + "Video Create" + '</td>' +
+            '<td>' + promiseArray[1] + '</td>' +
+            '</tr>'
+          );
+        $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + "Review Watch" + '</td>' +
+            '<td>' + promiseArray[2] + '</td>' +
+            '</tr>'
+          );
+        $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + "Review Create" + '</td>' +
+            '<td>' + promiseArray[3] + '</td>' +
+            '</tr>'
+          );
+        $('table#resultsTable').append(
+            '<tr>' +
+            '<td>' + "Review Paid" + '</td>' +
+            '<td>' + promiseArray[4] + '</td>' +
             '</tr>'
           );
       });
